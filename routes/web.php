@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\GajiController;
+use App\Http\Controllers\AbsenController;
 use Illuminate\Support\Facades\DB;
 
 // Halaman utama
@@ -44,3 +46,9 @@ Route::resource('departemen', DepartemenController::class);
 
 // Route untuk get-jabatan berdasarkan departemen
 Route::get('/get-jabatan/{departemen_id}', [KaryawanController::class, 'getJabatanByDepartemen']);
+
+// Route untuk gaji
+Route::get('/gaji', [GajiController::class, 'index'])->name('gaji.index');
+
+// Route untuk absen
+Route::get('/absen', [AbsenController::class, 'index'])->name('absen.index');

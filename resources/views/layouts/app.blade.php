@@ -114,6 +114,12 @@
                 <li class="nav-item">
                     <a href="/" class="nav-link">
                         <i class="fas fa-home"></i>
+                        <span class="menu-text">Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/" class="nav-link">
+                        <i class="fas fa-home"></i>
                         <span class="menu-text">Dashboard</span>
                     </a>
                 </li>
@@ -135,7 +141,19 @@
                         <span class="menu-text">Jabatan</span>
                     </a>
                 </li>
-            </ul>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="/gaji" class="nav-link">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span class="menu-text">Lihat Gaji</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/absen" class="nav-link">
+                            <i class="fas fa-calendar-check"></i>
+                            <span class="menu-text">Lihat Absen</span>
+                        </a>
+                    </li>
         </div>
         <div class="toggle-icon" id="toggleSidebar">
             <i class="fas fa-arrow-left"></i>
