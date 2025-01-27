@@ -86,8 +86,8 @@ class KaryawanController extends Controller
         // Validasi input data
         $validated = $request->validate([
             'Nama_Karyawan' => 'required|string|max:255',
-            'ID_Departemen' => 'required|integer',
-            'ID_Jabatan' => 'required|integer',
+            'ID_Departemen' => 'required|string',
+            'ID_Jabatan' => 'required|string',
             'Tanggal_Bergabung' => 'nullable|date',
             'Status_Karyawan' => 'required|string',
             'Jenis_Kelamin' => 'required|string',

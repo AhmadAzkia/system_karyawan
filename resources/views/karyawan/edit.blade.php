@@ -42,14 +42,7 @@
                 @endforeach
             </select>
         </div>
-
-        <!-- Input untuk Tanggal Bergabung -->
-        <div class="mb-3">
-            <label for="Tanggal_Bergabung" class="form-label">Tanggal Bergabung</label>
-            <input type="date" class="form-control" id="Tanggal_Bergabung" name="Tanggal_Bergabung"
-                value="{{ $karyawan->Tanggal_Bergabung }}">
-        </div>
-
+        
         <!-- Dropdown untuk Status Karyawan -->
         <div class="mb-3">
             <label for="Status_Karyawan" class="form-label">Status Karyawan</label>
