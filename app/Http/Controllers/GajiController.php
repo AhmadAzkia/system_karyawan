@@ -18,3 +18,4 @@ class GajiController extends Controller
         return view('gaji.index', compact('gaji'));
     }
 }
+

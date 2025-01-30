@@ -48,7 +48,13 @@ Route::resource('departemen', DepartemenController::class);
 Route::get('/get-jabatan/{departemen_id}', [KaryawanController::class, 'getJabatanByDepartemen']);
 
 // Route untuk gaji
-Route::get('/gaji', [GajiController::class, 'index'])->name('gaji.index');
+//Route::get('/gaji', [GajiController::class, 'index'])->name('gaji.index');
 
 // Route untuk absen
 Route::get('/absen', [AbsenController::class, 'index'])->name('absen.index');
+
+
+Route::get('/gaji', [GajiController::class, 'index'])->name('gaji.index');
+Route::get('/gaji/edit/{id}', [GajiController::class, 'edit'])->name('gaji.edit');
+Route::delete('/gaji/delete/{id}', [GajiController::class, 'destroy'])->name('gaji.delete');
+
