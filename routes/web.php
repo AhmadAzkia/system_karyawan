@@ -7,10 +7,23 @@ use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\GajiController;
 use App\Http\Controllers\AbsenController;
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Karyawan;
 use Illuminate\Support\Facades\DB;
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Halaman utama
 Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('home');
+    }
+    return view('Auth.HalamanLogin');
+})->name('Auth.HalamanLogin');
+
+// Halaman welcome
+Route::get('/welcome', function () {
     $total_departemen = DB::table('departemen')->count();
     $total_jabatan = DB::table('jabatan')->count();
     $total_karyawan = DB::table('Karyawan')->count();
@@ -27,6 +40,7 @@ Route::get('/', function () {
 
     return view('welcome', compact('total_departemen', 'total_jabatan', 'total_karyawan', 'departemen', 'jabatan'));
 });
+
 
 // Halaman login
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -47,14 +61,43 @@ Route::resource('departemen', DepartemenController::class);
 // Route untuk get-jabatan berdasarkan departemen
 Route::get('/get-jabatan/{departemen_id}', [KaryawanController::class, 'getJabatanByDepartemen']);
 
-// Route untuk gaji
-//Route::get('/gaji', [GajiController::class, 'index'])->name('gaji.index');
+// Route untuk ke halaman create gaji
+Route::get('/gaji/create', [GajiController::class, 'create'])->name('gaji.create');
+
+// Route untuk membuat gaji
+Route::post('/gaji', [GajiController::class, 'store'])->name('gaji.store');
+
+// Route untuk delete gaji
+Route::delete('/gaji/{id}', [GajiController::class, 'destroy'])->name('gaji.destroy');
+
+
+Route::get('/get-jabatan/{departemenId}', function ($departemenId) {
+    return DB::table('jabatan')->where('ID_Departemen', $departemenId)->get();
+});
+
+Route::get('/get-karyawan/{jabatanId}', function ($jabatanId) {
+    return DB::table('karyawan')->where('ID_Jabatan', $jabatanId)->get();
+});
+
+// Rute untuk edit
+Route::get('/gaji/{id}/edit', [GajiController::class, 'edit'])->name('gaji.edit');
+
+// Rute untuk update data gaji
+Route::put('/gaji/{id}', [GajiController::class, 'update'])->name('gaji.update');
+
+// Rute untuk delete
+Route::delete('/gaji/{id}', [GajiController::class, 'destroy'])->name('gaji.destroy');
+
 
 // Route untuk absen
 Route::get('/absen', [AbsenController::class, 'index'])->name('absen.index');
 
+// Route absen
+Route::get('/absen/{id}/edit', [AbsenController::class, 'edit'])->name('absen.edit');
+Route::put('/absen/{id}', [AbsenController::class, 'update'])->name('absen.update');
 
-Route::get('/gaji', [GajiController::class, 'index'])->name('gaji.index');
-Route::get('/gaji/edit/{id}', [GajiController::class, 'edit'])->name('gaji.edit');
-Route::delete('/gaji/delete/{id}', [GajiController::class, 'destroy'])->name('gaji.delete');
+// Menampilkan form absensi
+Route::get('/absensi', [AbsenController::class, 'create'])->name('absen.create');
 
+// Menyimpan data absensi
+Route::post('/absensi', [AbsenController::class, 'store'])->name('absen.store');

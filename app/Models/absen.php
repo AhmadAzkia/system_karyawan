@@ -2,25 +2,33 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Absen extends Model
 {
-    use HasFactory;
+    // Nama tabel absensi
+    protected $table = 'absensi';
 
-    protected $table = 'absensi';  // Sesuaikan dengan nama tabel
+    // Primary key
+    protected $primaryKey = 'id_absensi';
 
-    // Kolom yang dapat diisi
+    // Jika ID tidak auto-increment
+    public $incrementing = true;
+
+    // Timestamps
+    public $timestamps = false;
+
     protected $fillable = [
-        'ID_Karyawan',
-        'Tanggal',
-        'Status_Absen'
+        'id_karyawan',
+        'tanggal',
+        'status_kehadiran',
+        'jam_masuk',
+        'jam_keluar',
     ];
 
-    // Relasi ke Karyawan
+    // Relasi dengan karyawan
     public function karyawan()
     {
-        return $this->belongsTo(Karyawan::class, 'ID_Karyawan');
+        return $this->belongsTo(Karyawan::class, 'id_karyawan', 'ID_Karyawan');
     }
 }

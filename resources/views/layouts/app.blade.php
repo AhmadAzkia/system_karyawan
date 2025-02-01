@@ -100,7 +100,16 @@
             font-size: 1.2rem;
             transition: transform 0.3s ease;
         }
+
+        #sidebar.collapsed .toggle-icon {
+            padding: 25px;
+        }
+
+        #sidebar.collapsed .toggle-icon i {
+            font-size: 1rem;
+        }
     </style>
+
 </head>
 
 <body>
@@ -112,14 +121,14 @@
         <div class="menu">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a href="/" class="nav-link">
+                    <a href="{{ route('home') }}" class="nav-link">
                         <i class="fas fa-home"></i>
                         <span class="menu-text">Home</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="/" class="nav-link">
-                        <i class="fas fa-home"></i>
+                        <i class="fas fa-tachometer-alt"></i> <!-- Ganti ikon Dashboard -->
                         <span class="menu-text">Dashboard</span>
                     </a>
                 </li>
@@ -154,6 +163,7 @@
                             <span class="menu-text">Lihat Absen</span>
                         </a>
                     </li>
+                </ul>
         </div>
         <div class="toggle-icon" id="toggleSidebar">
             <i class="fas fa-arrow-left"></i>
@@ -184,5 +194,6 @@
         });
     </script>
 </body>
+
 
 </html>

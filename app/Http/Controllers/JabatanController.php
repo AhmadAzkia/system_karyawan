@@ -9,9 +9,19 @@ use Illuminate\Http\Request;
 
 class JabatanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $jabatans = Jabatan::all();
+        // Ambil parameter pencarian dari URL
+        $search = $request->get('search');
+
+        // Jika ada pencarian, filter berdasarkan nama jabatan
+        if ($search) {
+            $jabatans = Jabatan::where('Nama_Jabatan', 'like', '%' . $search . '%')->get();
+        } else {
+            // Jika tidak ada pencarian, ambil semua jabatan
+            $jabatans = Jabatan::all();
+        }
+
         return view('jabatan.index', compact('jabatans'));
     }
 

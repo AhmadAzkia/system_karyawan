@@ -9,13 +9,28 @@ use Illuminate\Http\Request;
 
 class KaryawanController extends Controller
 {
-    // Menampilkan data karyawan
-    public function index()
-    {
-        // Ambil semua data karyawan
-        $karyawans = Karyawan::all();
 
-        // Kirim data ke view
+    public function index(Request $request)
+    {
+        // Ambil data karyawan dengan pencarian
+        $search = $request->input('search');
+
+        if ($search) {
+            // Filter karyawan berdasarkan nama, ID, departemen, atau jabatan
+            $karyawans = Karyawan::where('Nama_Karyawan', 'like', "%{$search}%")
+                ->orWhere('ID_Karyawan', 'like', "%{$search}%")
+                ->orWhereHas('departemen', function ($query) use ($search) {
+                    $query->where('Nama_Departemen', 'like', "%{$search}%");
+                })
+                ->orWhereHas('jabatan', function ($query) use ($search) {
+                    $query->where('Nama_Jabatan', 'like', "%{$search}%");
+                })
+                ->get();
+        } else {
+            // Ambil semua data karyawan jika tidak ada pencarian
+            $karyawans = Karyawan::all();
+        }
+
         return view('karyawan.index', compact('karyawans'));
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -6,9 +7,17 @@ use App\Models\Departemen;
 
 class DepartemenController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $departments = Departemen::all();
+        // Menangani pencarian
+        $search = $request->input('search');
+        $departments = Departemen::query()
+            ->when($search, function ($query, $search) {
+                return $query->where('Nama_Departemen', 'LIKE', "%{$search}%")
+                    ->orWhere('Deskripsi_Departemen', 'LIKE', "%{$search}%");
+            })
+            ->get();
+
         return view('departemen.index', compact('departments'));
     }
 
@@ -63,18 +72,16 @@ class DepartemenController extends Controller
     {
         // Cari data berdasarkan ID_Departemen
         $department = Departemen::where('ID_Departemen', $id)->first();
-    
+
         // Jika data tidak ditemukan, beri error
         if (!$department) {
             return redirect()->route('departemen.index')->with('error', 'Departemen tidak ditemukan.');
         }
-    
+
         // Hapus data
         $department->delete();
-    
+
         // Redirect dengan pesan sukses
         return redirect()->route('departemen.index')->with('success', 'Departemen berhasil dihapus.');
     }
-    
-
 }

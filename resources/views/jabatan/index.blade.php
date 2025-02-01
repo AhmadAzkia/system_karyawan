@@ -5,7 +5,14 @@
 @section('content')
     <div class="container">
         <div class="header d-flex justify-content-between align-items-center mb-3">
-            <h1>Daftar Jabatan</h1>
+            <h1 class="w-50">Daftar Jabatan</h1>
+
+            <form action="{{ route('jabatan.index') }}" method="GET" class="d-flex w-45">
+                <input type="text" name="search" class="form-control" placeholder="Cari Jabatan"
+                    value="{{ request()->get('search') }}">
+                <button type="submit" class="btn btn-primary ms-2">Cari</button>
+            </form>
+
             <a href="{{ route('jabatan.create') }}" class="btn btn-primary">Tambah Jabatan</a>
         </div>
 
@@ -14,7 +21,7 @@
                 <tr>
                     <th class="align-middle text-center">ID Jabatan</th>
                     <th class="align-middle text-center">Nama Jabatan</th>
-                    <th class="align-middle text-center">Deskripsi</th>
+                    <th class="align-middle text-center w-25">Deskripsi</th>
                     <th class="align-middle text-center">Gaji Min</th>
                     <th class="align-middle text-center">Gaji Max</th>
                     <th class="align-middle text-center">ID Departemen</th>

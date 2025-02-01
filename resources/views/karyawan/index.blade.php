@@ -3,15 +3,21 @@
 @section('title', 'Daftar Karyawan')
 
 @section('content')
-
     <div class="container">
         <div class="header d-flex justify-content-between align-items-center mb-3">
-            <h1 class=" w-100">Daftar Karyawan</h1>
-            <a href="{{ route('karyawan.create') }}" class="btn btn-primary w-25">Tambah Karyawan</a>
+            <h1 class="w-50">Daftar Karyawan</h1>
+
+            <form action="{{ route('karyawan.index') }}" method="GET" class="d-flex w-45">
+                <input type="text" name="search" class="form-control" placeholder="Cari Karyawan"
+                    value="{{ request()->get('search') }}">
+                <button type="submit" class="btn btn-primary ms-2">Cari</button>
+            </form>
+
+            <a href="{{ route('karyawan.create') }}" class="btn btn-primary">Tambah Karyawan</a>
         </div>
 
         <!-- Tampilkan pesan sukses jika ada -->
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
@@ -37,7 +43,6 @@
                     <tr>
                         <td class="align-middle">{{ $karyawan->ID_Karyawan }}</td>
                         <td class="align-middle">{{ $karyawan->Nama_Karyawan }}</td>
-                        <!-- Menampilkan Nama Departemen dan Nama Jabatan -->
                         <td class="align-middle">{{ $karyawan->departemen->Nama_Departemen }}</td>
                         <td class="align-middle">{{ $karyawan->jabatan->Nama_Jabatan }}</td>
                         <td class="align-middle">{{ $karyawan->Tanggal_Bergabung }}</td>

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,24 +9,22 @@ class Gaji extends Model
 {
     use HasFactory;
 
-    protected $table = 'Gaji'; // Nama tabel gaji
+    protected $table = 'Gaji';
+    protected $primaryKey = 'ID_Gaji';  // Tentukan primary key
+    public $incrementing = false;  // Karena ID_Gaji adalah string
+    protected $fillable = ['ID_Karyawan', 'Gaji_Pokok', 'Tunjangan'];
 
-    protected $primaryKey = 'ID_Gaji'; // Primary key tabel Gaji
-
-    public $incrementing = false;
-
-    protected $keyType = 'string';
-
-    protected $fillable = [
-        'ID_Gaji',
-        'ID_Karyawan', // Foreign key
-        'Nominal',     // Kolom nominal gaji
-    ];
-
+    // Nonaktifkan timestamps jika tabel tidak memiliki kolom created_at dan updated_at
     public $timestamps = false;
 
     public function karyawan()
     {
         return $this->belongsTo(Karyawan::class, 'ID_Karyawan', 'ID_Karyawan');
+    }
+
+    // Gaji.php Model
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class, 'ID_Jabatan', 'ID_Jabatan');
     }
 }

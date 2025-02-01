@@ -1,4 +1,4 @@
-v@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Edit Gaji')
 
@@ -11,49 +11,57 @@ v@extends('layouts.app')
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+
+
         <!-- Form untuk mengedit data gaji -->
         <form action="{{ route('gaji.update', $gaji->ID_Gaji) }}" method="POST">
             @csrf
             @method('PUT')
 
-            <!-- Karyawan Dropdown (Read-Only) -->
+            <!-- Karyawan Dropdown (Manual Selection) -->
             <div class="mb-3">
                 <label for="ID_Karyawan" class="form-label">Karyawan</label>
-                <select class="form-control" id="ID_Karyawan" name="ID_Karyawan" disabled>
+                <select class="form-control" id="ID_Karyawan" name="ID_Karyawan" required>
                     <option value="">-- Pilih Karyawan --</option>
                     @foreach ($karyawans as $karyawan)
                         <option value="{{ $karyawan->ID_Karyawan }}"
                             {{ $gaji->ID_Karyawan == $karyawan->ID_Karyawan ? 'selected' : '' }}>
-                            {{ $karyawan->Nama_Karyawan }}</option>
+                            {{ $karyawan->Nama_Karyawan }}
+                        </option>
                     @endforeach
                 </select>
             </div>
 
-            <!-- Jabatan Dropdown (Read-Only, Selected Based on Karyawan) -->
+            <!-- Jabatan Dropdown (Manual Selection, Based on Karyawan) -->
             <div class="mb-3">
                 <label for="ID_Jabatan" class="form-label">Jabatan</label>
-                <input type="text" class="form-control" id="ID_Jabatan" name="ID_Jabatan"
-                    value="{{ $jabatan->Nama_Jabatan }}" disabled>
+                <select class="form-control" id="ID_Jabatan" name="ID_Jabatan" required>
+                    <option value="">-- Pilih Jabatan --</option>
+                    @foreach ($jabatans as $jabatan)
+                        <option value="{{ $jabatan->ID_Jabatan }}"
+                            {{ $jabatan->ID_Jabatan == $karyawan->ID_Jabatan ? 'selected' : '' }}>
+                            {{ $jabatan->Nama_Jabatan }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
-            <!-- Tampilkan Min dan Max Gaji -->
             <div class="mb-3">
-                <label for="Min_Gaji" class="form-label">Gaji Min</label>
-                <input type="text" class="form-control" id="Min_Gaji" name="Min_Gaji"
-                    value="Rp {{ number_format($jabatan->Min_Gaji, 0, ',', '.') }}" disabled>
+                <label for="Gaji_Pokok" class="form-label">Gaji Pokok</label>
+                <div class="d-flex">
+                    <input type="text" class="form-control"
+                        value="Min: Rp {{ number_format($jabatan->Min_Gaji, 0, ',', '.') }} | Max: Rp {{ number_format($jabatan->Max_Gaji, 0, ',', '.') }}"
+                        disabled>
+                </div>
             </div>
-
-            <div class="mb-3">
-                <label for="Max_Gaji" class="form-label">Gaji Max</label>
-                <input type="text" class="form-control" id="Max_Gaji" name="Max_Gaji"
-                    value="Rp {{ number_format($jabatan->Max_Gaji, 0, ',', '.') }}" disabled>
-            </div>
-
             <!-- Gaji Pokok (Editable) -->
             <div class="mb-3">
                 <label for="Gaji_Pokok" class="form-label">Gaji Pokok</label>
-                <input type="number" class="form-control" id="Gaji_Pokok" name="Gaji_Pokok" value="{{ $gaji->Gaji_Pokok }}"
-                    required>
+                <input type="number" class="form-control" id="Gaji_Pokok" name="Gaji_Pokok"
+                    value="{{ $gaji->Gaji_Pokok }}" required>
             </div>
 
             <!-- Tunjangan (Editable) -->
@@ -65,6 +73,5 @@ v@extends('layouts.app')
 
             <button type="submit" class="btn btn-primary">Update Gaji</button>
         </form>
-
     </div>
 @endsection
