@@ -127,7 +127,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/" class="nav-link">
+                    <a href="/welcome" class="nav-link">
                         <i class="fas fa-tachometer-alt"></i> <!-- Ganti ikon Dashboard -->
                         <span class="menu-text">Dashboard</span>
                     </a>
@@ -164,6 +164,17 @@
                         </a>
                     </li>
                 </ul>
+
+                <li class="nav-item">
+                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="nav-link btn btn-link text-white"
+                            style="border: none; background: none;">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="menu-text">Logout</span>
+                        </button>
+                    </form>
+                </li>
         </div>
         <div class="toggle-icon" id="toggleSidebar">
             <i class="fas fa-arrow-left"></i>

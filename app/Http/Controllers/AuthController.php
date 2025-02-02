@@ -1,57 +1,53 @@
 <?php
 
+// app/Http/Controllers/AuthController.php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Karyawan;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 
 class AuthController extends Controller
 {
-    /**
-     * Show the login form.
-     */
     public function showLoginForm()
     {
-        return view('Auth.HalamanLogin');
+        return view('auth.login');
     }
 
-    /**
-     * Handle the login request.
-     */
     public function login(Request $request)
     {
-        // Validate input fields
-        $credentials = $request->validate([
+        // Validasi input
+        $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        // Attempt to authenticate the user
-        if (Auth::attempt($credentials)) {
-            // Regenerate session to prevent fixation attacks
-            $request->session()->regenerate();
+        // Cari karyawan berdasarkan username
+        $karyawan = Karyawan::where('Nama_Karyawan', $request->username)->first();
 
-            // Redirect to the intended page or a default dashboard
-            return redirect()->intended('/dashboard');
+        if ($karyawan) {
+            // Ambil tanggal lahir dari kolom Tempat_Tanggal_Lahir
+            $tanggal_lahir = explode(',', $karyawan->Tempat_Tanggal_Lahir)[1]; // Ambil tanggal lahir setelah koma
+            $tanggal_lahir = trim($tanggal_lahir); // Hapus spasi
+
+            // Bandingkan password (tanggal lahir) dengan input user
+            if ($tanggal_lahir == $request->password) {
+                // Login sukses, arahkan ke halaman home
+                return redirect()->route('home'); // Ganti dengan route home
+            }
         }
 
-        // Redirect back with an error message if authentication fails
-        return Redirect::back()->withErrors([
-            'login_error' => 'Username atau password salah.',
-        ])->withInput($request->except('password'));
+        // Jika login gagal
+        return back()->withErrors(['error' => 'Username atau Password salah']);
     }
 
-    /**
-     * Log the user out.
-     */
     public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::logout(); // Menghapus sesi login
+        $request->session()->invalidate(); // Menghapus session
+        $request->session()->regenerateToken(); // Regenerasi CSRF token untuk keamanan
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/login');
+        return redirect()->route('login'); // Redirect ke halaman login
     }
 }

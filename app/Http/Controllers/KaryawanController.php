@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Karyawan;
 use App\Models\Departemen;
 use App\Models\Jabatan;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
 class KaryawanController extends Controller
@@ -45,6 +46,8 @@ class KaryawanController extends Controller
     }
 
     // Menyimpan data karyawan yang baru
+    // app/Http/Controllers/KaryawanController.php
+
     public function store(Request $request)
     {
         // Validasi input data
@@ -57,6 +60,7 @@ class KaryawanController extends Controller
             'Jenis_Kelamin' => 'required|string|in:L,P',
             'Tempat_Tanggal_Lahir' => 'nullable|string|max:100',
             'Nomor_HP' => 'required|string|max:15',
+            'Password' => 'required|string|min:8', // Menambahkan validasi untuk password
         ]);
 
         // Ambil ID_Karyawan terakhir dan generate ID baru
@@ -66,11 +70,15 @@ class KaryawanController extends Controller
         // Tambahkan ID Karyawan ke dalam data untuk disimpan
         $validated['ID_Karyawan'] = $newId;
 
+        // Hash password sebelum disimpan
+        $validated['Password'] = Hash::make($validated['Password']);  // Meng-hash password
+
         // Simpan data karyawan dengan ID yang sudah di-generate
         Karyawan::create($validated);
 
         return redirect()->route('karyawan.index')->with('success', 'Data karyawan berhasil ditambahkan!');
     }
+
 
     // Mengambil jabatan berdasarkan ID departemen
     public function getJabatanByDepartemen($departemenId)

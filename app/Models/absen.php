@@ -11,6 +11,7 @@ class Absen extends Model
 
     // Primary key
     protected $primaryKey = 'id_absensi';
+    protected $keyType = 'string';
 
     // Jika ID tidak auto-increment
     public $incrementing = true;

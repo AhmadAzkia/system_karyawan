@@ -14,18 +14,27 @@
             <h3 class="text-center mb-4">Sistem Karyawan</h3>
             <form action="{{ route('login') }}" method="POST">
                 @csrf
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" name="username" id="username" class="form-control"
-                        placeholder="Masukkan username" required>
+                <div>
+                    <label for="username">Nama Karyawan</label>
+                    <input type="text" name="username" id="username" required>
                 </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" name="password" id="password" class="form-control"
-                        placeholder="Masukkan password" required>
+
+                <div>
+                    <label for="password">Tanggal Lahir (Password)</label>
+                    <input type="password" name="password" id="password" required>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Login</button>
+
+                <button type="submit">Login</button>
+
+                @if ($errors->has('error'))
+                    <p>{{ $errors->first('error') }}</p>
+                @endif
             </form>
+
+            <div class="mt-3">
+                <!-- Tombol untuk masuk ke halaman login admin -->
+                <a href="{{ route('admin.login') }}" class="btn btn-secondary">Masuk ke Admin Login</a>
+            </div>
             <div class="text-center mt-3">
                 <small class="text-muted">&copy; {{ date('Y') }} Sistem Karyawan</small>
             </div>
